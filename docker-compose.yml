@@ -1,0 +1,45 @@
+version: '3'
+services:
+  bifrost:
+    build: .
+    command: /entry.sh
+    depends_on:
+      - db
+      - ethereum
+    volumes:
+      - ./config:/opt/bifrost/config
+    environment:
+      BIFROST_DB_HOST: db
+      POSTGRES_USER: pg
+      POSTGRES_PASSWORD: password
+      BIFROST_DB_NAME: bifrost
+      BIFROST_DB_DSN: "postgres://pg:password@db/bifrost?sslmode=disable"
+  ethereum:
+    image: ethereum/client-go:latest
+    command:
+      - --rpc
+      - --rpcaddr
+      - "0.0.0.0"
+      - --rpcport
+      - "8545"
+      - --testnet
+      - --fast
+      - --cache=512
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    volumes:
+      - ethereum:/root
+  db:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: pg
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: bifrost
+volumes:
+  postgres:
+  ethereum:
