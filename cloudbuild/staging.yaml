@@ -1,0 +1,11 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - "build"
+      - "--cache-from=us.gcr.io/$PROJECT_ID/stellar-bifrost:latest"
+      - "--file=Dockerfile"
+      - "--tag=us.gcr.io/$PROJECT_ID/stellar-bifrost:staging-latest"
+      - "--tag=us.gcr.io/$PROJECT_ID/stellar-bifrost:$REVISION_ID"
+      - "."
+images:
+  - 'us.gcr.io/$PROJECT_ID/stellar-bifrost'
