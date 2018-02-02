@@ -1,0 +1,14 @@
+---
+deploys:
+  - branch: master
+    namespace: bmx-prod
+    template: "us.gcr.io/bloom-general/stellar-bifrost:$GIT_COMMIT"
+    targets:
+      - deployment_name: bifrost
+        container: bifrost
+  - branch: staging
+    namespace: bmx-staging
+    template: "us.gcr.io/bloom-general/stellar-bifrost:$GIT_COMMIT"
+    targets:
+      - deployment_name: bifrost
+        container: bifrost
