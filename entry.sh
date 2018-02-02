@@ -6,7 +6,6 @@ main () {
   templater /opt/templates/pg.template > /root/.pgpass
   chmod 600 /root/.pgpass
 
-  psql -h $BIFROST_DB_HOST -U $POSTGRES_USER -c 'select 1' $BIFROST_DB_NAME
   while ! psql -h $BIFROST_DB_HOST -U $POSTGRES_USER -c 'select 1' $BIFROST_DB_NAME &> /dev/null
   do
     echo "Waiting for bifrostdb to be available..."
