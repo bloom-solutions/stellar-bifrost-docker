@@ -3,9 +3,6 @@
 set -e
 
 main () {
-  export BIFROST_DATA_DIR=/opt/bifrost/data
-  export BIFROST_CONFIG_DIR=/opt/bifrost/config
-
   templater /opt/templates/pg.template > /root/.pgpass
   chmod 600 /root/.pgpass
 
@@ -22,7 +19,7 @@ main () {
 }
 
 init_bifrost_db () {
-  if [ -f $BIFROST_DATA_DIR/.bifrostdb-initialized ]
+  if [ -f /opt/bifrost/data/.bifrostdb-initialized ]
   then
     echo "Bifrost DB: already initialized"
     return 0
@@ -31,12 +28,12 @@ init_bifrost_db () {
   echo "Bifrost DB: Initializing"
   DB_URL=$BIFROST_DB_DSN DB_DUMP_FILE=/go/src/github.com/stellar/go/services/bifrost/database/migrations/01_init.sql /go/bin/initbifrost
 
-  touch $BIFROST_DATA_DIR/.bifrostdb-initialized
+  touch /opt/bifrost/data/.bifrostdb-initialized
 }
 
 function start_bifrost() {
   echo "Starting bifrost..."
-  bifrost server -c $BIFORST_CONFIG_DIR/bifrost.cfg
+  bifrost server -c /opt/bifrost/config/bifrost.cfg
 }
 
 main
